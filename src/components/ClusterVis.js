@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../hooks/useD3';
 
-function ClusterVis({data}) {
+function ClusterVis({data, centroids}) {
 
     const ref = useD3(
         (svg) => {
@@ -81,6 +81,17 @@ function ClusterVis({data}) {
                 .attr("cy", function (d) { return y(d.y); } )
                 .attr("r", 5)
                 .style("fill", function (d) { return color(d.color) } )
+
+            // Add dots
+            svg.append('g')
+            .selectAll("dot")
+            .data(centroids)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(d.x); } )
+            .attr("cy", function (d) { return y(d.y); } )
+            .attr("r", 15)
+            .style("fill", function (d) { return color(d.color) } )
 
         },
         [data]
