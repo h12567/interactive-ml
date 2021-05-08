@@ -1,8 +1,12 @@
 import './App.css';
 
+import React, { Component, useRef } from 'react';
 import Dummy from './components/Dummy'
 import SampleVis from './components/SampleVis'
 import ClusterVis from './components/ClusterVis'
+import PseudoCodeBox from './components/PseudoCodeBox'
+import DataDisplay from './components/DataDisplay'
+import { Button } from '@material-ui/core'
 
 // const data = [
 //   {year: 1980, efficiency: 24.3, sales: 8949000},
@@ -50,12 +54,193 @@ const centroids = [
   {x: 12, y: 21, color: 'blue'}
 ]
 
+var pseudo_code = [
+  ["calculate random centroids", 1],
+  ["while movement", 1],
+  ["update point to centroid assignment", 2],
+  ["update centroid locations", 2]
+]
+
+const state_arr = [
+  [
+      0,
+      {'Variable Y' : '1'},
+      {
+          'data':  [{x: 12, y: 2, color: 'red'},
+                      {x: 51, y: 3, color: 'blue'},
+                      {x: 11, y: 19, color: 'red'},
+                      {x: 21, y: 29, color: 'red'},
+                      {x: 31, y: 39, color: 'red'}],
+          'centroids': [
+              {x: 1, y: 1, color: 'red'},
+              {x: 12, y: 21, color: 'blue'}
+          ]
+      }
+  ],
+  [
+    1,
+    {'Variable X' : '1'},
+    {
+        'data':  [{x: 12, y: 2, color: 'blue'},
+                    {x: 51, y: 3, color: 'blue'},
+                    {x: 11, y: 19, color: 'blue'},
+                    {x: 21, y: 29, color: 'blue'},
+                    {x: 31, y: 39, color: 'red'}],
+        'centroids': [
+          {x: 1, y: 1, color: 'red'},
+          {x: 12, y: 21, color: 'blue'}
+      ]
+    }
+  ],
+  [
+    2,
+    {'Variable Z' : '113431'},
+    {
+        'data':  [{x: 12, y: 2, color: 'red'},
+                    {x: 51, y: 3, color: 'red'},
+                    {x: 11, y: 19, color: 'red'},
+                    {x: 21, y: 29, color: 'red'},
+                    {x: 31, y: 39, color: 'red'}],
+                    'centroids': [
+                      {x: 1, y: 1, color: 'red'},
+                      {x: 12, y: 21, color: 'blue'}
+                  ]
+    }
+  ],
+  [
+    3,
+    {'Variable X' : '1'},
+    {
+        'data':  [{x: 12, y: 2, color: 'blue'},
+                    {x: 51, y: 3, color: 'blue'},
+                    {x: 11, y: 19, color: 'blue'},
+                    {x: 21, y: 29, color: 'blue'},
+                    {x: 31, y: 39, color: 'red'}],
+        'centroids': [
+          {x: 12, y: 11, color: 'red'},
+          {x: 32, y: 51, color: 'blue'}
+      ]
+    }
+  ],
+  [
+    1,
+    {'Variable Z' : '113431'},
+    {
+        'data':  [{x: 12, y: 2, color: 'red'},
+                    {x: 51, y: 3, color: 'red'},
+                    {x: 11, y: 19, color: 'red'},
+                    {x: 21, y: 29, color: 'red'},
+                    {x: 31, y: 39, color: 'red'}],
+        'centroids': [
+            {x: 12, y: 11, color: 'red'},
+            {x: 32, y: 51, color: 'blue'}
+        ]
+    }
+  ],
+  [
+    2,
+    {'Variable X' : '1'},
+    {
+        'data':  [{x: 12, y: 2, color: 'blue'},
+                    {x: 51, y: 3, color: 'blue'},
+                    {x: 11, y: 19, color: 'blue'},
+                    {x: 21, y: 29, color: 'blue'},
+                    {x: 31, y: 39, color: 'red'}],
+          'centroids': [
+            {x: 12, y: 11, color: 'red'},
+            {x: 32, y: 51, color: 'blue'}
+        ]
+    }
+  ],
+  [
+    3,
+    {'Variable Z' : '113431'},
+    {
+        'data':  [{x: 12, y: 2, color: 'red'},
+                    {x: 51, y: 3, color: 'red'},
+                    {x: 11, y: 19, color: 'red'},
+                    {x: 21, y: 29, color: 'red'},
+                    {x: 31, y: 39, color: 'red'}],
+          'centroids': [
+            {x: 42, y: 11, color: 'red'},
+            {x: 12, y: 51, color: 'blue'}
+        ]
+    }
+  ],
+];
+
+
 function App() {
+  // var initial_idx = 0;
+  const [initial_idx, setIntialIdx] = React.useState(0);
+  var itemList = [];
+  // const clusterVisRef = React.useRef();
+  const clusterVisRef = React.useRef();
+  const [refVisible, setRefVisible] = React.useState(false);
+  console.log("HIEU");
+  for (var i = 0; i < state_arr.length; i ++) {
+    itemList.push(
+      <div class="row">
+        <div class="column" width="30%" float="left">
+          <ClusterVis data={state_arr[i][2]['data']} centroids={state_arr[i][2]['centroids']} />
+        </div>
+        <div class="column" width="30%" float="right">
+          <PseudoCodeBox code_box={pseudo_code} idx={state_arr[i][0]} />
+        </div>
+        <div class="column" width="30%" float="right">
+          <DataDisplay data={state_arr[i][1]} />
+        </div>
+      </div>
+    );
+
+  }
+
+  function decreaseIdx() {
+    // initial_idx -= 1;
+    setIntialIdx(initial_idx - 1);
+    console.log("INIT");
+    console.log(initial_idx);
+  }
+
+  function increaseIdx() {
+    // initial_idx += 1;
+    setIntialIdx(initial_idx + 1);
+    console.log("INIT");
+    console.log(initial_idx);
+    console.log(clusterVisRef);
+    // clusterVisRef.current.forceUpdate();
+  }
+
+  React.useEffect(() => {
+    console.log(clusterVisRef.current);
+  }, [clusterVisRef]);
+
   return (
     <div classname="App">
       {/* <Dummy /> */}
       {/* <SampleVis data={data} /> */}
-      <ClusterVis data={data} />
+
+      {/* <div>
+        {itemList}
+      </div>  */}
+      
+      <div class="row"  ref={r => { clusterVisRef.current = r; setRefVisible(!!r); }}>
+        <div class="column" width="30%" float="left">
+          <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']}
+          />
+        </div>
+        <div class="column" width="30%" float="right">
+          <PseudoCodeBox id='code_box' i={initial_idx} code_box={pseudo_code} idx={state_arr[initial_idx][0]} />
+        </div>
+        <div class="column" width="30%" float="right">
+          <DataDisplay id='data_display' i={initial_idx} data={state_arr[initial_idx][1]} />
+        </div>
+      </div>
+      <div>
+        <Button onClick={decreaseIdx} color="primary"> PREV </Button>
+        <Button onClick={increaseIdx} color="primary"> NEXT </Button>
+      </div>
+
     </div>
   );
 
