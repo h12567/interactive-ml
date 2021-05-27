@@ -1,4 +1,4 @@
-import { euclidean } from './distance';
+import util from 'util'
 
 var pseudo_code = [
     ("calculate random centroids", 1),
@@ -7,6 +7,41 @@ var pseudo_code = [
     ("update centroid locations", 2)
 ]
 
+function euclidean(v1, v2) {
+    var total = 0;
+    for (var i = 0; i < v1.length; i++) {
+        total += Math.pow(v2[i] - v1[i], 2);      
+    }
+    return Math.sqrt(total);
+}
+
+function generateVisualizedData(points, centroids, assignment) {
+    // the default colors, now limited to 7 colors of the rainbow
+    const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+    
+    // generate data array
+    var data = [];
+    for (var i = 0; i < assignment.length; i++) {
+        data.push({
+            "x": points[i][0], "y": points[i][1],
+            "color": colors[assignment[i]]
+        });
+    }
+
+    // generate centroid array
+    var centroid_data = [];
+    for (var i = 0; i < centroids.length; i++) {
+        centroid_data.push({
+            "x": centroids[i][0], "y": centroids[i][1],
+            "color": colors[i]
+        });
+    }
+
+    return {
+        "data": data,
+        "centroids": centroid_data
+    }
+}
 
 // Structure of state_arr
 // Array of 3 elements:
@@ -30,22 +65,29 @@ var pseudo_code = [
 // ]
 
 function KMeans(points, k) {
+    // randomly choose k points as k centroids
     var state_arr = [];
     function randomCentroids(points, k) {
         var centroids = points.slice(0);
         centroids.sort(function() {
             return (Math.round(Math.random()) - 0.5);
          });
-        res = centroids.slice(0, k);
+        var res = centroids.slice(0, k);
         return res;
     }
 
     function classify(centroids, point) {
+        console.log("Point")
+        console.log(point)
         var min = Infinity,
         index = 0;
 
         for (var i = 0; i < centroids.length; i++) {
             var dist = euclidean(point, centroids[i]);
+            console.log("Distance to centroid")
+            console.log(centroids[i])
+            console.log(dist)
+            console.log("-----")
             if (dist < min) {
                 min = dist;
                 index = i;
@@ -59,6 +101,8 @@ function KMeans(points, k) {
         k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
      
         var centroids = randomCentroids(points, k);
+        console.log("Initial centroids")
+        console.log(util.inspect(centroids))
         state_arr.push(
             [
                 0, 
@@ -82,14 +126,15 @@ function KMeans(points, k) {
            )
            // update point-to-centroid assignments
            for (var i = 0; i < points.length; i++) {
-              assignment[i] = classify(points[i], centroids);
+              assignment[i] = classify(centroids, points[i]);
            }
-
+           console.log("Assignments")
+           console.log(util.inspect(assignment))
            state_arr.push(
                 [
                     2,
                     {'assignment': assignment},
-                    null
+                    generateVisualizedData(points, centroids, assignment)
                 ]
             )
      
@@ -136,8 +181,12 @@ function KMeans(points, k) {
     return state_arr;
 }
 
-global_state_arr = KMeans();
+const points = [[1, 2],
+               [2, 1],
+               [-2, -1],
+               [-1, -2]];
+const k = 2;
 
-print(global_state_arr);
+var global_state_arr = KMeans(points, k);
 
-
+console.log(util.inspect(global_state_arr, true, 7, true));
