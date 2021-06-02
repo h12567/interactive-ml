@@ -233,4 +233,6 @@ const k = 2;
 
 var global_state_arr = KMeans(points, k);
 
-console.log(util.inspect(global_state_arr, true, 7, true));
+console.log(util.inspect(global_state_arr, true, 70, true));
+
+export { pseudo_code, KMeans};
