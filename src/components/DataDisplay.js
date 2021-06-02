@@ -16,6 +16,8 @@ function DataDisplay({classes, data}) {
 
     var itemList = [];
 
+    console.log(data);
+
     for (const [key, value] of Object.entries(data)) {
         var result_str = key + " : " + value;
         itemList.push(
