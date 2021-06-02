@@ -1,10 +1,10 @@
 import util from 'util'
 
 var pseudo_code = [
-    ("calculate random centroids", 1),
-    ("while movement", 1),
-    ("update point to centroid assignment", 2),
-    ("update centroid locations", 2)
+    ["calculate random centroids", 1],
+    ["while movement", 1],
+    ["update point to centroid assignment", 2],
+    ["update centroid locations", 2]
 ]
 
 function euclidean(v1, v2) {
@@ -32,14 +32,16 @@ function weighted_random(items, weights) {
 
 function generateVisualizedData(points, centroids, assignment) {
     // the default colors, now limited to 7 colors of the rainbow
-    const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+    const colors = ["red", "orange", "yellow", "green", "blue", "indigo"];
+    var default_color = "violet";
     
     // generate data array
     var data = [];
     for (var i = 0; i < assignment.length; i++) {
+        var color_use = assignment.length > i && assignment[i] != null ? colors[assignment[i]] : default_color;
         data.push({
             "x": points[i][0], "y": points[i][1],
-            "color": colors[assignment[i]]
+            "color": color_use
         });
     }
 
@@ -147,19 +149,20 @@ function KMeans(inp_points, inp_k) {
 
     function cluster(points, k) {
         k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
+
+        var assignment = new Array(points.length);
+        var clusters = new Array(k);
      
         var centroids = kMeansPlusPlus(points, k);
+
         state_arr.push(
             [
                 0, 
                 null,
-                null
+                generateVisualizedData(points, centroids, assignment)
             ]
         )
-     
-        var assignment = new Array(points.length);
-        var clusters = new Array(k);
-     
+
         var iterations = 0;
         var movement = true;
         while (movement) {
@@ -167,7 +170,7 @@ function KMeans(inp_points, inp_k) {
                [
                    1, 
                    {'movement': movement},
-                   null
+                   generateVisualizedData(points, centroids, assignment)
                ]
            )
            // update point-to-centroid assignments
@@ -215,7 +218,23 @@ function KMeans(inp_points, inp_k) {
               clusters[j] = assigned;
            }
 
+           state_arr.push(
+                [
+                    3,
+                    null,
+                    generateVisualizedData(points, centroids, assignment)
+                ]
+            )
+
         }
+
+        state_arr.push(
+            [
+                1, 
+                {'movement': movement},
+                generateVisualizedData(points, centroids, assignment)
+            ]
+        )
      
         return clusters;
      }
