@@ -68,8 +68,10 @@ function ClusterVis({data, centroids}) {
 
             // Color scale: give me a specie name, I return a color
             var color = d3.scaleOrdinal()
-                .domain(["blue", "red", "virginica" ])
-                .range([ "#F8766D", "#00BA38", "#619CFF"])
+                // .domain(["blue", "red", "virginica" ])
+                // .range([ "#F8766D", "#00BA38", "#619CFF"])
+                .domain(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
+                .range(["#FF0000", "#ffa500", "#FFFF00", "#00FF00", "#0000FF", "#4b0082", "#d16aff"])
 
             // Add dots
             svg.append('g')
