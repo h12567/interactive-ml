@@ -92,7 +92,7 @@ function ClusterVis({data, centroids}) {
             .append("circle")
             .attr("cx", function (d) { return x(d.x); } )
             .attr("cy", function (d) { return y(d.y); } )
-            .attr("r", 15)
+            .attr("r", 8)
             .style("fill", function (d) { return color(d.color) } )
 
         },
