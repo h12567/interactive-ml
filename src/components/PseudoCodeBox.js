@@ -42,6 +42,15 @@ function PseudoCodeBox({classes, code_box, idx}) {
                         style={{width: 400}}
                         fullWidth={true}
                         defaultValue="color"
+                        color="red"
+                        style={{
+                            backgroundColor: "green"
+                        }}
+                        InputProps={{
+                            style: {
+                                color: "black"
+                            }
+                        }}
                     />
                 </tbody>
             );

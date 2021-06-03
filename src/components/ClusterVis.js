@@ -32,7 +32,7 @@ function ClusterVis({data, centroids}) {
                 .style("fill", "EBEBEB")
             
             var x = d3.scaleLinear()
-                .domain([0*0.95, 100*1.001])
+                .domain([0*0.95, 1000*1.001])
                 .range([ 0, width ])
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -41,7 +41,7 @@ function ClusterVis({data, centroids}) {
 
             // Add Y axis
             var y = d3.scaleLinear()
-                .domain([-0.001, 100*1.01])
+                .domain([-0.001, 1000*1.01])
                 .range([ height, 0])
                 .nice()
             svg.append("g")
@@ -56,7 +56,7 @@ function ClusterVis({data, centroids}) {
                 .attr("text-anchor", "end")
                 .attr("x", width/2 + margin.left)
                 .attr("y", height + margin.top + 20)
-                .text("Sepal Length");
+                .text("");
 
             // Y axis label:
             svg.append("text")
@@ -64,9 +64,9 @@ function ClusterVis({data, centroids}) {
                 .attr("transform", "rotate(-90)")
                 .attr("y", -margin.left + 20)
                 .attr("x", -margin.top - height/2 + 20)
-                .text("Petal Length")
-
+                .text("")
             // Color scale: give me a specie name, I return a color
+
             var color = d3.scaleOrdinal()
                 // .domain(["blue", "red", "virginica" ])
                 // .range([ "#F8766D", "#00BA38", "#619CFF"])
@@ -89,10 +89,11 @@ function ClusterVis({data, centroids}) {
             .selectAll("dot")
             .data(centroids)
             .enter()
-            .append("circle")
-            .attr("cx", function (d) { return x(d.x); } )
-            .attr("cy", function (d) { return y(d.y); } )
-            .attr("r", 8)
+            .append("rect")
+            .attr("x", function (d) { return x(d.x); } )
+            .attr("y", function (d) { return y(d.y); } )
+            .attr("width", 35)
+            .attr("height", 35)
             .style("fill", function (d) { return color(d.color) } )
 
         },
