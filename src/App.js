@@ -10,7 +10,11 @@ import MainComponent from './MainComponent'
 import { TextField } from '@material-ui/core'
 import { pseudo_code, KMeans } from './ml/k-means'
 import { range } from 'd3';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Layout, Typography } from 'antd';
+import { DeploymentUnitOutlined } from '@ant-design/icons';
+const { Header, Footer, Content } = Layout;
+const { Title } = Typography;
+
 
 var points = [
   [120, 20],
@@ -63,23 +67,34 @@ function App() {
 
   return (
     <div>
-      <Form
-        layout="inline"
-        onFinish={generateRandomPoints}
-        onValuesChange={onFormChange}
-      >
-        <Form.Item name="numPoints" label="Number of points">
-          <Input placeholder="Input a number" />
-        </Form.Item>
-        <Form.Item name="numCentroids" label="Number of centroids">
-          <Input placeholder="Input a number" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" onClick={generateRandomPoints}>Submit</Button>
-        </Form.Item>
-      </Form>
+      <Layout style={{height:"100vh"}}>
+        <Header>
+          <Title style = {{color:"white", marginTop:"10px"}} level={2}>
+            <DeploymentUnitOutlined></DeploymentUnitOutlined> InteractiveML
+          </Title>
+        </Header>
+        <Content>
 
-      <MainComponent id='main_component' state_arr={state_arr} />
+          <Form
+          layout="inline"
+          onFinish={generateRandomPoints}
+          onValuesChange={onFormChange}
+          >
+            <Form.Item name="numPoints" label="Number of points">
+              <Input placeholder="Input a number" />
+            </Form.Item>
+            <Form.Item name="numCentroids" label="Number of centroids">
+              <Input placeholder="Input a number" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={generateRandomPoints}>Submit</Button>
+            </Form.Item>
+          </Form>
+          <MainComponent id='main_component' state_arr={state_arr} />
+
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>InteractiveML ©2021 Created by InteractiveML Team</Footer>
+      </Layout>
     </div>
   );
 
