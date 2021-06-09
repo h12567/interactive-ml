@@ -66,8 +66,16 @@ function MainComponent({state_arr}) {
               ? <Radio.Button type="primary" onClick={increaseIdx}><StepForwardOutlined /> Next</Radio.Button>
               : <Radio.Button type="primary" disabled><StepForwardOutlined /> Next</Radio.Button>
             }
-            <Radio.Button type="primary" onClick={startRun}><CaretRightOutlined /> Run</Radio.Button>
-            <Radio.Button type="primary" onClick={pauseRun}><PauseOutlined /> Pause</Radio.Button>
+            {is_pause
+              ? <Radio.Button type="primary" onClick={startRun}><CaretRightOutlined /> Run</Radio.Button>
+              : <Radio.Button type="primary" disabled><CaretRightOutlined /> Run</Radio.Button>
+            }
+            {!is_pause
+              ? <Radio.Button type="primary" onClick={pauseRun}><PauseOutlined /> Pause</Radio.Button>
+              : <Radio.Button type="primary" disabled><PauseOutlined /> Pause</Radio.Button>
+            }
+
+
           </Radio.Group>
         </div>
 
