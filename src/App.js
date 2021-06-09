@@ -68,11 +68,13 @@ function App() {
   return (
     <div>
       <Layout style={{height:"100vh"}}>
+
         <Header style={{display:"flex", flexDirection:"column", justifyContent: "flex-end"}}>
           <Title style={{color:"white"}} level={2}>
             <DeploymentUnitOutlined></DeploymentUnitOutlined> InteractiveML
           </Title>
         </Header>
+
         <Content style={{display:"flex", flexDirection:"column", justifyContent:"space-evenly", alignItems: "center"}}>
           <Form
           layout="inline"
@@ -91,7 +93,9 @@ function App() {
           </Form>
           <MainComponent id='main_component' state_arr={state_arr} />
         </Content>
+
         <Footer style={{textAlign:'center'}}>InteractiveML ©2021 Created by InteractiveML Team</Footer>
+
       </Layout>
     </div>
   );
