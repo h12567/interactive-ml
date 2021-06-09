@@ -10,7 +10,7 @@ import MainComponent from './MainComponent'
 import { TextField } from '@material-ui/core'
 import { pseudo_code, KMeans } from './ml/k-means'
 import { range } from 'd3';
-import { Form, Input, Button, Layout, Typography } from 'antd';
+import { Form, Input, Button, Layout, Typography, message } from 'antd';
 import { DeploymentUnitOutlined } from '@ant-design/icons';
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
@@ -38,18 +38,22 @@ function App() {
   const [refVisible, setRefVisible] = React.useState(false);
 
   function generateRandomPoints() {
-    console.log("DATA HERE");
-    console.log(n_input);
-    points = [];
-    for (var i = 0; i < n_input; i ++) {
-      points.push([
-        Math.random() * 1000, Math.random() * 1000
-      ]);
+    if (n_input && k_input) {
+      console.log("DATA HERE");
+      console.log(n_input);
+      points = [];
+      for (var i = 0; i < n_input; i ++) {
+        points.push([
+          Math.random() * 1000, Math.random() * 1000
+        ]);
+      }
+      console.log(points);
+      points = points;
+      k = k_input;
+      setStateArr(KMeans(points, k_input));
+    } else {
+      message.error("Please input number of points & centroids")
     }
-    console.log(points);
-    points = points;
-    k = k_input;
-    setStateArr(KMeans(points, k_input));
   }
 
   React.useEffect(() => {
@@ -59,9 +63,14 @@ function App() {
   const onFormChange = ({ numPoints, numCentroids }) => {
     if (numPoints) {
       n_input = parseInt(numPoints)
+    } else if (numPoints === "") {
+      n_input = undefined
     }
+
     if (numCentroids) {
       k_input = parseInt(numCentroids)
+    } else if (numCentroids === "") {
+      k_input = undefined
     }
   };
 
