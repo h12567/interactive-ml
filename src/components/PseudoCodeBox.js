@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const styles = {
     root: {
-        background: "black"
+        background: "#001628"
     },
     input: {
         color: "white"
@@ -44,11 +44,11 @@ function PseudoCodeBox({classes, code_box, idx}) {
                         defaultValue="color"
                         color="red"
                         style={{
-                            backgroundColor: "green"
+                            backgroundColor: "#EFF2F5"
                         }}
                         InputProps={{
                             style: {
-                                color: "black"
+                                color: "#001628"
                             }
                         }}
                     />
@@ -69,7 +69,7 @@ function PseudoCodeBox({classes, code_box, idx}) {
             {itemList}
         </div>
     );
-}   
+}
 
 PseudoCodeBox.propTypes = {
     classes: PropTypes.object.isRequired
