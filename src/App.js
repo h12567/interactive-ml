@@ -7,9 +7,14 @@ import ClusterVis from './components/ClusterVis'
 import PseudoCodeBox from './components/PseudoCodeBox'
 import DataDisplay from './components/DataDisplay'
 import MainComponent from './MainComponent'
-import { Button, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { pseudo_code, KMeans } from './ml/k-means'
 import { range } from 'd3';
+import { Form, Input, Button, Layout, Typography, message } from 'antd';
+import { DeploymentUnitOutlined } from '@ant-design/icons';
+const { Header, Footer, Content } = Layout;
+const { Title } = Typography;
+
 
 var points = [
   [120, 20],
@@ -19,62 +24,88 @@ var points = [
   [110, 190]
 ];
 var k = 2;
+var n_input, k_input;
 
 function App() {
-  
+
   var [state_arr, setStateArr] = React.useState(0);
-  
+
   console.log("COMPUTE");
   console.log(k);
   state_arr = KMeans(points, k);
-  
+
   const clusterVisRef = React.useRef();
   const [refVisible, setRefVisible] = React.useState(false);
 
-  var n_input, k_input;
-
-  function generateRandomPoints(evt) {
-    console.log("DATA HERE");
-    console.log(n_input);
-    points = [];
-    for (var i = 0; i < n_input; i ++) {
-      points.push([
-        Math.random() * 1000, Math.random() * 1000
-      ]);
+  function generateRandomPoints() {
+    if (n_input && k_input) {
+      console.log("DATA HERE");
+      console.log(n_input);
+      points = [];
+      for (var i = 0; i < n_input; i ++) {
+        points.push([
+          Math.random() * 1000, Math.random() * 1000
+        ]);
+      }
+      console.log(points);
+      points = points;
+      k = k_input;
+      setStateArr(KMeans(points, k_input));
+    } else {
+      message.error("Please input number of points & centroids")
     }
-    console.log(points);
-    points = points;
-    k = k_input;
-    setStateArr(KMeans(points, k_input));
-    evt.preventDefault();
-  }
-
-  function updateK(evt) {
-    k_input = parseInt(evt.target.value);
-  }
-
-  function updateN(evt) {
-    n_input = parseInt(evt.target.value);
   }
 
   React.useEffect(() => {
     console.log(clusterVisRef.current);
   }, [clusterVisRef]);
 
+  const onFormChange = ({ numPoints, numCentroids }) => {
+    if (numPoints) {
+      n_input = parseInt(numPoints)
+    } else if (numPoints === "") {
+      n_input = undefined
+    }
+
+    if (numCentroids) {
+      k_input = parseInt(numCentroids)
+    } else if (numCentroids === "") {
+      k_input = undefined
+    }
+  };
+
   return (
     <div>
-      <form onSubmit={generateRandomPoints}>
-        <label>
-          Number of Points:
-          <TextField onChange={updateN} />
-        </label>
-        <label>
-          Number of Centroids:
-          <TextField onChange={updateK} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      <MainComponent id='main_component' state_arr={state_arr} />
+      <Layout style={{height:"100vh"}}>
+
+        <Header style={{display:"flex", flexDirection:"column", justifyContent: "flex-end"}}>
+          <Title style={{color:"white"}} level={2}>
+            <DeploymentUnitOutlined></DeploymentUnitOutlined> InteractiveML
+          </Title>
+        </Header>
+
+        <Content style={{display:"flex", flexDirection:"column", justifyContent:"space-evenly", alignItems: "center"}}>
+          <Form
+          layout="inline"
+          onFinish={generateRandomPoints}
+          onValuesChange={onFormChange}
+          >
+            <Form.Item name="numPoints" label="Number of points">
+              <Input placeholder="Input a number" />
+            </Form.Item>
+            <Form.Item name="numCentroids" label="Number of centroids">
+              <Input placeholder="Input a number" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={generateRandomPoints}>Submit</Button>
+            </Form.Item>
+          </Form>
+          <MainComponent id='main_component' state_arr={state_arr} />
+        </Content>
+
+        <Footer style={{textAlign:'center'}}>InteractiveML ©2021 Created by InteractiveML Team</Footer>
+
+      </Layout>
     </div>
   );
 
