@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div>
-      <Layout style={{height:"100vh"}}>
+      <Layout style={{height:"120vh"}}>
 
         <Header style={{display:"flex", flexDirection:"column", justifyContent: "flex-end"}}>
           <Title style={{color:"white"}} level={2}>
