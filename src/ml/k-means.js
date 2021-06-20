@@ -1,10 +1,10 @@
 import util from 'util'
 
 var pseudo_code = [
-    ["calculate random centroids", 1],
-    ["while movement", 1],
-    ["update point to centroid assignment", 2],
-    ["update centroid locations", 2]
+    ("Initialize K centroids", 1),
+    ("While centroid positions change", 1),
+    ("Assign each point to its closest centroid", 2),
+    ("Compute new centroid as the average position of each cluster", 2)
 ]
 
 function euclidean(v1, v2) {
