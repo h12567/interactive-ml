@@ -24,7 +24,7 @@ function PseudoCodeBox({classes, code_box, idx}) {
                 <tbody>
                     <TextField
                         value={result_str}
-                        style={{width: 400}}
+                        style={{width: 500}}
                         fullWidth={true}
                         defaultValue="color"
                         className={classes.root}
@@ -39,7 +39,7 @@ function PseudoCodeBox({classes, code_box, idx}) {
                 <tbody>
                     <TextField
                         value={result_str}
-                        style={{width: 400}}
+                        style={{width: 500}}
                         fullWidth={true}
                         defaultValue="color"
                         color="red"
