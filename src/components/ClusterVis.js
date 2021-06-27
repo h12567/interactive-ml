@@ -6,65 +6,65 @@ function ClusterVis({data, centroids}) {
 
     const ref = useD3(
         (svg) => {
-            var margin = {top: 10, right: 30, bottom: 40, left: 50},
+            var margin = {top: 30, right: 30, bottom: 30, left: 30},
                 width = 520 - margin.left - margin.right,
                 height = 520 - margin.top - margin.bottom;
 
-            
             while (d3.select("#k-means").firstChild) {
                 d3.select('#k-means').removeChild(svg.lastChild);
             }
 
-            // var svg = d3.select("#k-means")
-            // .append("svg")
-            //     .attr("width", width + margin.left + margin.right)
-            //     .attr("height", height + margin.top + margin.bottom)
-            // .append("g")
-            //     .attr("transform",
-            //         "translate(" + margin.left + "," + margin.top + ")")
-                    
+            var svg = d3.select("#k-means")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")")
+
             svg
             .append("rect")
                 .attr("x",0)
                 .attr("y",0)
                 .attr("height", height)
-                .attr("width", height)
-                .style("fill", "EBEBEB")
-            
+                .attr("width", width)
+                .attr("fill", "#EBEBEB")
+
+            // Add X axis
             var x = d3.scaleLinear()
-                .domain([0*0.95, 1000*1.001])
+                .domain([0, 1000])
                 .range([ 0, width ])
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(10))
+                .call(d3.axisBottom(x).tickSize(-width).ticks(10))
                 .select(".domain").remove()
 
             // Add Y axis
             var y = d3.scaleLinear()
-                .domain([-0.001, 1000*1.01])
-                .range([ height, 0])
+                .domain([0, 1000])
+                .range([height, 0])
                 .nice()
             svg.append("g")
-                .call(d3.axisLeft(y).tickSize(-width*1.3).ticks(7))
+                .call(d3.axisLeft(y).tickSize(-height).ticks(10))
                 .select(".domain").remove()
 
             // Customization
             svg.selectAll(".tick line").attr("stroke", "white")
 
-            // Add X axis label:
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr("x", width/2 + margin.left)
-                .attr("y", height + margin.top + 20)
-                .text("");
-
-            // Y axis label:
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr("transform", "rotate(-90)")
-                .attr("y", -margin.left + 20)
-                .attr("x", -margin.top - height/2 + 20)
-                .text("")
+            // // Add X axis label:
+            // svg.append("text")
+            //     .attr("text-anchor", "end")
+            //     .attr("x", width/2 + margin.left)
+            //     .attr("y", height + margin.top + 20)
+            //     .text("");
+            //
+            // // Y axis label:
+            // svg.append("text")
+            //     .attr("text-anchor", "end")
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("y", -margin.left + 20)
+            //     .attr("x", -margin.top - height/2 + 20)
+            //     .text("")
             // Color scale: give me a specie name, I return a color
 
             var color = d3.scaleOrdinal()
@@ -73,7 +73,19 @@ function ClusterVis({data, centroids}) {
                 .domain(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
                 .range(["#FF0000", "#ffa500", "#FFFF00", "#00FF00", "#0000FF", "#4b0082", "#d16aff"])
 
-            // Add dots
+            // Add clusters
+            svg.append('g')
+                .selectAll("dot")
+                .data(centroids)
+                .enter()
+                .append("rect")
+                .attr("x", function (d) { return x(d.x-20); } )
+                .attr("y", function (d) { return y(d.y+20); } )
+                .attr("width", 20)
+                .attr("height", 20)
+                .style("fill", function (d) { return color(d.color) } )
+
+            // Add points
             svg.append('g')
                 .selectAll("dot")
                 .data(data)
@@ -84,17 +96,7 @@ function ClusterVis({data, centroids}) {
                 .attr("r", 5)
                 .style("fill", function (d) { return color(d.color) } )
 
-            // Add dots
-            svg.append('g')
-            .selectAll("dot")
-            .data(centroids)
-            .enter()
-            .append("rect")
-            .attr("x", function (d) { return x(d.x); } )
-            .attr("y", function (d) { return y(d.y); } )
-            .attr("width", 35)
-            .attr("height", 35)
-            .style("fill", function (d) { return color(d.color) } )
+
 
         },
         [data]
@@ -104,7 +106,7 @@ function ClusterVis({data, centroids}) {
         // <div
         //     id="k-means"
         // >
-        <svg 
+        <svg
             ref={ref}
             id="k-means"
             width="520"
