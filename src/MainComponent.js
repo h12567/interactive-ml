@@ -3,10 +3,10 @@ import './App.css';
 import React, { Component, useRef } from 'react';
 import Dummy from './components/Dummy'
 import SampleVis from './components/SampleVis'
-import ClusterVis from './components/ClusterVis'
 import PseudoCodeBox from './components/PseudoCodeBox'
 import DataDisplay from './components/DataDisplay'
 import ProgressBar from 'react-bootstrap/ProgressBar'
+import AlgoFactory from './AlgoFactory'
 import Col from 'react-bootstrap/Col'
 import { pseudo_code, KMeans } from './ml/k-means'
 import { Progress, Button, Radio } from 'antd';
@@ -47,8 +47,7 @@ function MainComponent({state_arr}) {
         <div className="row">
 
           <div className="col-sm-12 col-md-8">
-            <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']}
-            />
+            {AlgoFactory.selectVis("KMeansCluster", state_arr, initial_idx)}
           </div>
           <div className="col-sm-12 col-md-8">
             <PseudoCodeBox id='code_box' i={initial_idx} code_box={pseudo_code} idx={state_arr[initial_idx][0]} />
