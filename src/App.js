@@ -7,13 +7,15 @@ import ClusterVis from './components/ClusterVis'
 import PseudoCodeBox from './components/PseudoCodeBox'
 import DataDisplay from './components/DataDisplay'
 import MainComponent from './MainComponent'
+import AlgoFactory from './AlgoFactory'
 import { TextField } from '@material-ui/core'
 import { pseudo_code, KMeans } from './ml/k-means'
 import { range } from 'd3';
-import { Form, Input, Button, Layout, Typography, message } from 'antd';
-import { DeploymentUnitOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Layout, Typography, message, Select } from 'antd';
+import { DeploymentUnitOutlined, DownOutlined } from '@ant-design/icons';
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
+const { Option } = Select;
 
 
 var points = [
@@ -25,6 +27,7 @@ var points = [
 ];
 var k = 2;
 var n_input, k_input;
+var method;
 
 function App() {
 
@@ -32,27 +35,24 @@ function App() {
 
   console.log("COMPUTE");
   console.log(k);
-  state_arr = KMeans(points, k);
+  // state_arr = KMeans(points, k);
 
   const clusterVisRef = React.useRef();
   const [refVisible, setRefVisible] = React.useState(false);
 
   function generateRandomPoints() {
-    if (n_input && k_input) {
-      console.log("DATA HERE");
-      console.log(n_input);
-      points = [];
-      for (var i = 0; i < n_input; i ++) {
-        points.push([
-          Math.random() * 1000, Math.random() * 1000
-        ]);
-      }
-      console.log(points);
-      points = points;
-      k = k_input;
-      setStateArr(KMeans(points, k_input));
-    } else {
-      message.error("Please input number of points & centroids")
+    if (method == null) {
+      message.error("Please select ML Algorithm");
+    }
+
+    var output_dict = AlgoFactory.generateDataDict("KMeansCluster", {
+      n_input: n_input,
+      k_input: k_input,
+    });
+    if (output_dict["state_arr"]) {
+      points = output_dict["points"];
+      k = output_dict["k"];
+      setStateArr(output_dict["state_arr"]);
     }
   }
 
@@ -84,6 +84,23 @@ function App() {
           </Title>
         </Header>
 
+        <Form.Item label="Category">
+          <Select 
+            onChange={(value) => {
+              method=value;
+            }} 
+            name="category" 
+            placeholder="Please select a category">
+              {
+                AlgoFactory.methods.map( function(method) {
+                  return (
+                    <Option value={method}>{method}</Option>
+                  );
+                })
+              }
+          </Select>
+        </Form.Item>
+
         <Content style={{display:"flex", flexDirection:"column", justifyContent:"space-evenly", alignItems: "center"}}>
           <Form
           layout="inline"
@@ -100,7 +117,7 @@ function App() {
               <Button type="primary" onClick={generateRandomPoints}>Submit</Button>
             </Form.Item>
           </Form>
-          <MainComponent id='main_component' state_arr={state_arr} />
+          {state_arr ? <MainComponent id='main_component' state_arr={state_arr} /> : null}
         </Content>
 
         <Footer style={{textAlign:'center'}}>InteractiveML ©2021 Created by InteractiveML Team</Footer>
