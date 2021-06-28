@@ -289,3 +289,4 @@ var global_state_arr = Hierarchical(points, k);
 console.log(util.inspect(global_state_arr, true, 70, true));
 
 export { hierarchical_pseudo_code, Hierarchical};
+

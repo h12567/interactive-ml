@@ -13,8 +13,8 @@ import { Progress, Button, Radio } from 'antd';
 import { StepBackwardOutlined, StepForwardOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 
 
-function MainComponent({state_arr}) {
-    const [initial_idx, setIntialIdx] = React.useState(0);
+function MainComponent({state_arr, method, idx}) {
+    const [initial_idx, setIntialIdx] = React.useState(idx);
     const [is_pause, setPause] = React.useState(true);
     var percent = (initial_idx + 1) / state_arr.length * 100
 
@@ -47,10 +47,10 @@ function MainComponent({state_arr}) {
         <div className="row">
 
           <div className="col-sm-12 col-md-8">
-            {AlgoFactory.selectVis("KMeansCluster", state_arr, initial_idx)}
+            {AlgoFactory.selectVis(method, state_arr, initial_idx)}
           </div>
           <div className="col-sm-12 col-md-8">
-            <PseudoCodeBox id='code_box' i={initial_idx} code_box={pseudo_code} idx={state_arr[initial_idx][0]} />
+            <PseudoCodeBox id='code_box' i={initial_idx} code_box={AlgoFactory.getPseudoCode(method)} idx={state_arr[initial_idx][0]} />
           </div>
         </div>
 

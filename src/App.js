@@ -24,6 +24,7 @@ var method;
 function App() {
 
   var [state_arr, setStateArr] = React.useState(0);
+  var [idx, setIdx] = React.useState(0);
 
   console.log("COMPUTE");
   console.log(k);
@@ -46,6 +47,7 @@ function App() {
       k = output_dict["k"];
       setStateArr(output_dict["state_arr"]);
     }
+    setIdx(0);
   }
 
   React.useEffect(() => {
@@ -109,7 +111,7 @@ function App() {
               <Button type="primary" onClick={generateRandomPoints}>Submit</Button>
             </Form.Item>
           </Form>
-          {state_arr ? <MainComponent id='main_component' state_arr={state_arr} /> : null}
+          {state_arr ? <MainComponent id='main_component' state_arr={state_arr} method={method} idx={idx} /> : null}
         </Content>
 
         <Footer style={{textAlign:'center'}}>InteractiveML ©2021 Created by InteractiveML Team</Footer>
