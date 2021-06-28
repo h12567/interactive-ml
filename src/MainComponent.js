@@ -1,3 +1,4 @@
+import util from 'util'
 import './App.css';
 
 import React, { Component, useRef } from 'react';
@@ -8,7 +9,6 @@ import DataDisplay from './components/DataDisplay'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import AlgoFactory from './AlgoFactory'
 import Col from 'react-bootstrap/Col'
-import { pseudo_code, KMeans } from './ml/k-means'
 import { Progress, Button, Radio } from 'antd';
 import { StepBackwardOutlined, StepForwardOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 

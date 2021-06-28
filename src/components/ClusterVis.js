@@ -70,8 +70,10 @@ function ClusterVis({data, centroids}) {
             var color = d3.scaleOrdinal()
                 // .domain(["blue", "red", "virginica" ])
                 // .range([ "#F8766D", "#00BA38", "#619CFF"])
-                .domain(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
-                .range(["#FF0000", "#ffa500", "#FFFF00", "#00FF00", "#0000FF", "#4b0082", "#d16aff"])
+                .domain(["silver", "darkslategray", "seagreen", "darkred", "olive", "darkblue", "maroon3", "red", "darkorange", "gold",
+                "lawngreen", "mediumspringgreen", "royalblue", "aqua", "deepskyblue", "blue", "orchid", "fuchsia", "khaki", "lightsalmon"])
+                .range(["#c0c0c0", "#2f4f4f", "#2e8b57", "#8b0000", "#808000", "#00008b", "#b03060", "#ff0000", "#ff8c00", "#ffd700", 
+                "#7cfc00", "#00fa9a", "#4169e1", "#00ffff", "#00bfff", "#0000ff", "#da70d6", "#ff00ff", "#f0e68c", "#ffa07a"])
 
             // Add clusters
             svg.append('g')

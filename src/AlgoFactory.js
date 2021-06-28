@@ -3,6 +3,7 @@ import { message } from 'antd';
 import ClusterVis from './components/ClusterVis'
 import { pointers } from 'd3';
 import { KMeans } from './ml/k-means';
+import { Hierarchical } from './ml/hierarchical';
 
 class AlgoFactory {
     static selectVis(method, state_arr, initial_idx) {
@@ -18,7 +19,7 @@ class AlgoFactory {
         var points = [];
         for (var i = 0; i < n_input; i ++) {
           points.push([
-            Math.random() * 1000, Math.random() * 1000
+            Math.random() * 1000 % 900 + 50, Math.random() * 1000 % 900 + 50 // [50, 950]
           ]);
         }
         return points;

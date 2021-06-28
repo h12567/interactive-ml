@@ -1,6 +1,6 @@
 import util from 'util'
 
-var pseudo_code = [
+var kmeans_pseudo_code = [
     ["Initialize K centroids", 1],
     ["While centroid positions change", 1],
     ["Assign each point to its closest centroid", 2],
@@ -150,7 +150,7 @@ function KMeans(inp_points, inp_k) {
     function cluster(points, k) {
         k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
 
-        var assignment = new Array(points.length);
+        var assignments = new Array(points.length);
         var clusters = new Array(k);
      
         var centroids = kMeansPlusPlus(points, k);
@@ -159,7 +159,7 @@ function KMeans(inp_points, inp_k) {
             [
                 0, 
                 null,
-                generateVisualizedData(points, centroids, assignment)
+                generateVisualizedData(points, centroids, assignments)
             ]
         )
 
@@ -170,18 +170,18 @@ function KMeans(inp_points, inp_k) {
                [
                    1, 
                    {'movement': movement},
-                   generateVisualizedData(points, centroids, assignment)
+                   generateVisualizedData(points, centroids, assignments)
                ]
            )
-           // update point-to-centroid assignments
+           // update point-to-centroid assignmentss
            for (var i = 0; i < points.length; i++) {
-              assignment[i] = classify(centroids, points[i]);
+              assignments[i] = classify(centroids, points[i]);
            }
            state_arr.push(
                 [
                     2,
-                    {'assignment': assignment},
-                    generateVisualizedData(points, centroids, assignment)
+                    {'assignments': assignments},
+                    generateVisualizedData(points, centroids, assignments)
                 ]
             )
      
@@ -189,8 +189,8 @@ function KMeans(inp_points, inp_k) {
            movement = false;
            for (var j = 0; j < k; j++) {
               var assigned = [];
-              for (var i = 0; i < assignment.length; i++) {
-                 if (assignment[i] == j) {
+              for (var i = 0; i < assignments.length; i++) {
+                 if (assignments[i] == j) {
                     assigned.push(points[i]);
                  }
               }
@@ -222,7 +222,7 @@ function KMeans(inp_points, inp_k) {
                 [
                     3,
                     null,
-                    generateVisualizedData(points, centroids, assignment)
+                    generateVisualizedData(points, centroids, assignments)
                 ]
             )
 
@@ -232,7 +232,7 @@ function KMeans(inp_points, inp_k) {
             [
                 1, 
                 {'movement': movement},
-                generateVisualizedData(points, centroids, assignment)
+                generateVisualizedData(points, centroids, assignments)
             ]
         )
      
@@ -254,4 +254,4 @@ var global_state_arr = KMeans(points, k);
 
 console.log(util.inspect(global_state_arr, true, 70, true));
 
-export { pseudo_code, KMeans};
+export { kmeans_pseudo_code, KMeans};

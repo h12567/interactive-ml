@@ -1,18 +1,10 @@
 import './App.css';
 
 import React, { Component, useRef } from 'react';
-import Dummy from './components/Dummy'
-import SampleVis from './components/SampleVis'
-import ClusterVis from './components/ClusterVis'
-import PseudoCodeBox from './components/PseudoCodeBox'
-import DataDisplay from './components/DataDisplay'
 import MainComponent from './MainComponent'
 import AlgoFactory from './AlgoFactory'
-import { TextField } from '@material-ui/core'
-import { pseudo_code, KMeans } from './ml/k-means'
-import { range } from 'd3';
 import { Form, Input, Button, Layout, Typography, message, Select } from 'antd';
-import { DeploymentUnitOutlined, DownOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined} from '@ant-design/icons';
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
 const { Option } = Select;
