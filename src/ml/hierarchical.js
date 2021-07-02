@@ -87,13 +87,15 @@ function euclidean(v1, v2) {
 // 	   ]
 // }
 
+
 function generateVisualizedData(points, centroids, assignments, dendogram) {
   var data = [];
   for (var i = 0; i < assignments.length; i++) {
     var color_use = dendogram[assignments[i]]["color"] !== "unprocessed" ? dendogram[assignments[i]]["color"] : default_color;
     data.push({
       "x": points[i][0], "y": points[i][1],
-      "color": color_use
+      "color": color_use,
+      "name": i
     })
   }
 
@@ -133,8 +135,7 @@ function Hierarchical(inp_points, inp_k) {
     var [dendogram, centroids, assignments] = [[], [], []];
     for (var i = 0; i < points.length; i++) {
       dendogram.push({
-        "left": i,
-        "right": {},
+        "name": i,
         "color": "unprocessed",
         "height": 0,
         "size": 1
@@ -275,18 +276,20 @@ function Hierarchical(inp_points, inp_k) {
 
   cluster(points, k);
 
+  console.log("STATE_ARR");
+  console.log(state_arr);
   return state_arr;
 }
 
-const points = [[1, 2],
-               [2, 1],
-               [-2, -1],
-               [-1, -2]];
-const k = 1;
+// const points = [[1, 2],
+//                [2, 1],
+//                [-2, -1],
+//                [-1, -2]];
+// const k = 1;
 
-var global_state_arr = Hierarchical(points, k);
+// var global_state_arr = Hierarchical(points, k);
 
-console.log(util.inspect(global_state_arr, true, 70, true));
+// console.log(util.inspect(global_state_arr, true, 70, true));
 
 export { hierarchical_pseudo_code, Hierarchical};
 

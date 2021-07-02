@@ -1,6 +1,7 @@
 import { message } from 'antd';
 
 import ClusterVis from './components/ClusterVis'
+import DendogramVis from './components/DendogramVis'
 import { pointers } from 'd3';
 import { kmeans_pseudo_code, KMeans } from './ml/k-means';
 import { hierarchical_pseudo_code, Hierarchical } from './ml/hierarchical';
@@ -12,13 +13,19 @@ class AlgoFactory {
     static selectVis(method, state_arr, initial_idx) {
         if (method == KMeansCluster) {
             return (
-                <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']}
+                <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']} is_display={0}
                 />
             );
         } else if (method == HierarchicalCluster) {
+            // console.log("HERE HIEU");
+            // console.log(state_arr[initial_idx]);
+            // console.log(state_arr[initial_idx][2]['dendogram']);
             return (
-                <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']}
-                />
+                <div>
+                    <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']} is_display={1}
+                    />
+                    <DendogramVis i={initial_idx} dendogram={state_arr[initial_idx][2]['dendogram']}/>
+                </div>
             );
         }
     }
@@ -34,6 +41,8 @@ class AlgoFactory {
     }
 
     static generateDataDict(method, input_dict) {
+        console.log("DataDict");
+        console.log(method);
         var n_input = input_dict["n_input"];
         var k_input = input_dict["k_input"];
         if (n_input == null || k_input == null) {
@@ -58,6 +67,8 @@ class AlgoFactory {
     }
 
     static getPseudoCode(method) {
+        console.log("CODE");
+        console.log(method);
         if (method == KMeansCluster) {
             return kmeans_pseudo_code;
         } else if (method == HierarchicalCluster) {
