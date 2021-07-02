@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../hooks/useD3';
 
-function ClusterVis({data, centroids}) {
+function ClusterVis({data, centroids, is_display}) {
 
     const ref = useD3(
         (svg) => {
@@ -87,18 +87,36 @@ function ClusterVis({data, centroids}) {
                 .attr("height", 20)
                 .style("fill", function (d) { return color(d.color) } )
 
+            
             // Add points
-            svg.append('g')
+            var nodes = svg.append('g')
                 .selectAll("dot")
                 .data(data)
                 .enter()
-                .append("circle")
+            
+            // var nodes = svg.selectAll("g")
+            //     .data(data)
+            //     .enter()
+            //     .append('g').attr("transform", function(d) {
+            //         return "translate(" + d.y + "," + d.x + ")"
+            //     })
+
+            nodes.append("circle")
                 .attr("cx", function (d) { return x(d.x); } )
                 .attr("cy", function (d) { return y(d.y); } )
-                .attr("r", 5)
+                .attr("r", 8)
                 .style("fill", function (d) { return color(d.color) } )
 
-
+            if (is_display == 1) {
+                nodes.append("text")
+                .text(function(d) { console.log("NAME HERE"); console.log(d);return d.name != null ? d.name : "" })
+                .attr("x", function (d) { return x(d.x);})
+                .attr("y", function (d) { return y(d.y);})
+                .style("text-anchor", "middle")
+                // .style("fill", "black")
+                .style("font-family", "Arial")
+                .style("font-size", 13);
+            }
 
         },
         [data]

@@ -20,6 +20,9 @@ var points = [
 var k = 2;
 var n_input, k_input;
 var method;
+// var n_input = 12;
+// var k_input = 3;
+// var method = AlgoFactory.HierarchicalCluster;
 
 function App() {
 
@@ -38,7 +41,7 @@ function App() {
       message.error("Please select ML Algorithm");
     }
 
-    var output_dict = AlgoFactory.generateDataDict("KMeansCluster", {
+    var output_dict = AlgoFactory.generateDataDict(method, {
       n_input: n_input,
       k_input: k_input,
     });

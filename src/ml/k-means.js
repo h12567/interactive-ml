@@ -41,7 +41,8 @@ function generateVisualizedData(points, centroids, assignment) {
         var color_use = assignment.length > i && assignment[i] != null ? colors[assignment[i]] : default_color;
         data.push({
             "x": points[i][0], "y": points[i][1],
-            "color": color_use
+            "color": color_use,
+            "name": i
         });
     }
 
@@ -244,14 +245,14 @@ function KMeans(inp_points, inp_k) {
     return state_arr;
 }
 
-const points = [[1, 2],
-               [2, 1],
-               [-2, -1],
-               [-1, -2]];
-const k = 2;
+// const points = [[1, 2],
+//                [2, 1],
+//                [-2, -1],
+//                [-1, -2]];
+// const k = 2;
 
-var global_state_arr = KMeans(points, k);
+// var global_state_arr = KMeans(points, k);
 
-console.log(util.inspect(global_state_arr, true, 70, true));
+// console.log(util.inspect(global_state_arr, true, 70, true));
 
 export { kmeans_pseudo_code, KMeans};
