@@ -2,6 +2,7 @@ import { message } from 'antd';
 
 import ClusterVis from './components/ClusterVis'
 import DendogramVis from './components/DendogramVis'
+import GraphVis from './components/GraphVis'
 import { pointers } from 'd3';
 import { kmeans_pseudo_code, KMeans } from './ml/k-means';
 import { hierarchical_pseudo_code, Hierarchical, postprocessStateArrHierarchical } from './ml/hierarchical';
@@ -21,8 +22,8 @@ class AlgoFactory {
                 <div>
                     <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']} is_display={1}
                     />
-                    <DendogramVis i={initial_idx} dendogram={state_arr[initial_idx][2]['dendogram']}/>
-                    
+                    {/* <DendogramVis i={initial_idx} dendogram={state_arr[initial_idx][2]['dendogram']}/> */}
+                    <GraphVis id='graph_vis' i={initial_idx} tree={state_arr[initial_idx][2]['dendogram']} num_points={state_arr[initial_idx][2]['data'].length} />
                 </div>
             );
         }
