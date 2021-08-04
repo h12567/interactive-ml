@@ -281,6 +281,59 @@ function Hierarchical(inp_points, inp_k) {
   return state_arr;
 }
 
+function postprocessStateArrHierarchical(state_arr) {
+    let last_tree = JSON.parse(JSON.stringify(state_arr[state_arr.length - 1][2]['dendogram']));
+    
+    function sortTree(tree) {
+      if (tree["name"] != undefined) {
+        return [tree["name"]];
+      }
+      let left_size = tree["left"] ? tree["left"]["size"] : 0;
+      let left_arr = tree["left"] ? sortTree(tree["left"]) : [];
+      let right_size = tree["right"] ? tree["right"]["size"] : 0;
+      let right_arr = tree["right"] ? sortTree(tree["right"]) : [];
+      if (left_size >= right_size) {
+        return left_arr.concat(right_arr);
+      } else {
+        return right_arr.concat(left_arr);
+      }
+    }
+
+    function calc2DPos(tree, idx_map) {
+      if (tree["name"] != undefined) {
+        tree["loc"] = [
+          idx_map[tree["name"]], tree["height"]
+        ];
+        return tree["loc"];
+      }
+      
+      let leftLoc = calc2DPos(tree["left"], idx_map);
+      let rightLoc = calc2DPos(tree["right"], idx_map);
+      tree["loc"] = [
+        (leftLoc[0] + rightLoc[0]) / 2, tree["height"]
+      ]
+      return tree["loc"];
+    }
+
+    let result_arr = [];
+    for (var key in last_tree) {
+      result_arr = result_arr.concat(sortTree(last_tree[key]));
+    }
+
+    let final_idx_map = {};
+    for (let i = 0; i < result_arr.length; i ++) {
+      final_idx_map[result_arr[i]] = i;
+    }
+
+    for (let i = 0; i < state_arr.length; i ++) {
+      let dendogram = state_arr[i][2]['dendogram'];
+      for (var key in dendogram) {
+        let subtree = dendogram[key];
+        calc2DPos(subtree, final_idx_map);
+      }
+    }
+}
+
 // const points = [[1, 2],
 //                [2, 1],
 //                [-2, -1],
@@ -291,5 +344,5 @@ function Hierarchical(inp_points, inp_k) {
 
 // console.log(util.inspect(global_state_arr, true, 70, true));
 
-export { hierarchical_pseudo_code, Hierarchical};
+export { hierarchical_pseudo_code, Hierarchical, postprocessStateArrHierarchical};
 

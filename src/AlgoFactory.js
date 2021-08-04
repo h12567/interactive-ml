@@ -4,7 +4,7 @@ import ClusterVis from './components/ClusterVis'
 import DendogramVis from './components/DendogramVis'
 import { pointers } from 'd3';
 import { kmeans_pseudo_code, KMeans } from './ml/k-means';
-import { hierarchical_pseudo_code, Hierarchical } from './ml/hierarchical';
+import { hierarchical_pseudo_code, Hierarchical, postprocessStateArrHierarchical } from './ml/hierarchical';
 
 let HierarchicalCluster = "HierarchicalCluster";
 let KMeansCluster = "KMeansCluster"
@@ -17,14 +17,12 @@ class AlgoFactory {
                 />
             );
         } else if (method == HierarchicalCluster) {
-            // console.log("HERE HIEU");
-            // console.log(state_arr[initial_idx]);
-            // console.log(state_arr[initial_idx][2]['dendogram']);
             return (
                 <div>
                     <ClusterVis id='cluster_vis' i={initial_idx} data={state_arr[initial_idx][2]['data']} centroids={state_arr[initial_idx][2]['centroids']} is_display={1}
                     />
                     <DendogramVis i={initial_idx} dendogram={state_arr[initial_idx][2]['dendogram']}/>
+                    
                 </div>
             );
         }
@@ -58,10 +56,12 @@ class AlgoFactory {
                 state_arr: KMeans(points, k_input)
             };
         } else if (method == HierarchicalCluster) {
+            let state_arr = Hierarchical(points, k_input);
+            postprocessStateArrHierarchical(state_arr);
             return {
                 k: k_input,
                 points: points,
-                state_arr: Hierarchical(points, k_input)
+                state_arr: state_arr
             }
         }
     }
